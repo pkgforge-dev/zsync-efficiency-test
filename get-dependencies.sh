@@ -15,3 +15,5 @@ get-debloated-pkgs --add-common --prefer-nano kiconthemes-mini
 wget https://github.com/mhx/dwarfs/releases/download/v0.15.3/dwarfs-universal-0.15.3-Linux-"$ARCH" -O /usr/bin/dwarfs
 chmod +x /usr/bin/dwarfs
 
+wget https://github.com/VHSgunzo/squashfs-tools-static/releases/download/v4.7.5/mksquashfs-"$ARCH" -O /usr/bin/mksquashfs
+chmod +x /usr/bin/mksquashfs
