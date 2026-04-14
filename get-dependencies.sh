@@ -12,7 +12,6 @@ echo "Installing debloated packages..."
 echo "---------------------------------------------------------------"
 get-debloated-pkgs --add-common --prefer-nano kiconthemes-mini
 
-# Comment this out if you need an AUR package
-#make-aur-package PACKAGENAME
+wget https://github.com/mhx/dwarfs/releases/download/v0.15.3/dwarfs-universal-0.15.3-Linux-"$ARCH" -O /usr/bin/dwarfs
+chmod +x /usr/bin/dwarfs
 
-# If the application needs to be manually built that has to be done down here
