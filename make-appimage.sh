@@ -13,9 +13,9 @@ export ALWAYS_SOFTWARE=1
 # Deploy dependencies
 quick-sharun /usr/bin/filelight
 
+
 runtime=$(command -v uruntime-appimage-dwarfs-lite-"$ARCH")
 upinfobase="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest"
-
 set -- \
 	--force \
 	--set-owner 0 \
@@ -30,6 +30,7 @@ set -- \
 appimage=test-zstd22-S26.AppImage
 upinfo="$upinfobase|$appimage.zsync"
 mkdwarfs "$@" -C zstd:level=22 -S26 -B6 --output "$appimage"
+chmod +x "$appimage"
 ./"$appimage" --appimage-addupdinfo "$upinfo"
 zsyncmake -u ./"$appimage".zsync "$appimage"
 
@@ -37,6 +38,7 @@ zsyncmake -u ./"$appimage".zsync "$appimage"
 appimage=test-zstd22-S20.AppImage
 upinfo="$upinfobase|$appimage.zsync"
 mkdwarfs "$@"  -C zstd:level=22 -S20 -B6 --output "$appimage"
+chmod +x "$appimage"
 ./"$appimage" --appimage-addupdinfo "$upinfo"
 zsyncmake -u ./"$appimage".zsync "$appimage"
 
@@ -44,6 +46,7 @@ zsyncmake -u ./"$appimage".zsync "$appimage"
 appimage=test-zstd10-S26.AppImage
 upinfo="$upinfobase|$appimage.zsync"
 mkdwarfs "$@" -C zstd:level=10 -S26 -B6 --output "$appimage"
+chmod +x "$appimage"
 ./"$appimage" --appimage-addupdinfo "$upinfo"
 zsyncmake -u ./"$appimage".zsync "$appimage"
 
@@ -51,6 +54,7 @@ zsyncmake -u ./"$appimage".zsync "$appimage"
 appimage=test-zstd10-S20.AppImage
 upinfo="$upinfobase|$appimage.zsync"
 mkdwarfs "$@" -C zstd:level=10 -S20 -B6 --output "$appimage"
+chmod +x "$appimage"
 ./"$appimage" --appimage-addupdinfo "$upinfo"
 zsyncmake -u ./"$appimage".zsync "$appimage"
 
