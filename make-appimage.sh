@@ -33,7 +33,7 @@ upinfo="$upinfobase|$appimage.zsync"
 mkdwarfs "$@" -C zstd:level=22 -S26 -B6 --output "$appimage"
 chmod +x "$appimage"
 ./"$appimage" --appimage-addupdinfo "$upinfo"
-zsyncmake -u ./"$appimage".zsync "$appimage"
+zsyncmake -u "$appimage".zsync "$appimage"
 
 # high comp and low block
 appimage=test-zstd22-S20-$ARCH.AppImage
@@ -41,7 +41,7 @@ upinfo="$upinfobase|$appimage.zsync"
 mkdwarfs "$@"  -C zstd:level=22 -S20 -B6 --output "$appimage"
 chmod +x "$appimage"
 ./"$appimage" --appimage-addupdinfo "$upinfo"
-zsyncmake -u ./"$appimage".zsync "$appimage"
+zsyncmake -u "$appimage".zsync "$appimage"
 
 # low comp and high block
 appimage=test-zstd10-S26-$ARCH.AppImage
@@ -49,7 +49,7 @@ upinfo="$upinfobase|$appimage.zsync"
 mkdwarfs "$@" -C zstd:level=10 -S26 -B6 --output "$appimage"
 chmod +x "$appimage"
 ./"$appimage" --appimage-addupdinfo "$upinfo"
-zsyncmake -u ./"$appimage".zsync "$appimage"
+zsyncmake -u "$appimage".zsync "$appimage"
 
 # low comp and low block
 appimage=test-zstd10-S20-$ARCH.AppImage
@@ -57,7 +57,7 @@ upinfo="$upinfobase|$appimage.zsync"
 mkdwarfs "$@" -C zstd:level=10 -S20 -B6 --output "$appimage"
 chmod +x "$appimage"
 ./"$appimage" --appimage-addupdinfo "$upinfo"
-zsyncmake -u ./"$appimage".zsync "$appimage"
+zsyncmake -u "$appimage".zsync "$appimage"
 
 
 mkdir -p ./dist
