@@ -13,7 +13,7 @@ export ALWAYS_SOFTWARE=1
 # Deploy dependencies
 quick-sharun /usr/bin/filelight
 
-# cp -v /usr/lib/libgtk-3.so* ./AppDir/shared/lib
+cp -v /usr/lib/libgtk-3.so* ./AppDir/shared/lib
 
 upinfobase="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest"
 
