@@ -13,10 +13,24 @@ export ALWAYS_SOFTWARE=1
 # Deploy dependencies
 quick-sharun /usr/bin/filelight
 
-cp -v /usr/lib/libgtk-3.so* ./AppDir/shared/lib
+#cp -v /usr/lib/libgtk-3.so* ./AppDir/shared/lib
 
-runtime=$(command -v uruntime-appimage-dwarfs-lite-"$ARCH")
 upinfobase="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest"
+
+# squashfs for reference
+runtime=$(command -v uruntime-appimage-squashfs-lite-"$ARCH")
+appimage=sqfs-zstd22-B1M-$ARCH.AppImage
+upinfo="$upinfobase|$appimage.zsync"
+mksquashfs ./AppDir ./squashfs -comp zstd -Xcompression-level 22 -b 1M
+cp -v "$runtime" "$appimage"
+cat ./squashfs >> "$appimage"
+chmod +x "$appimage"
+./"$appimage" --appimage-addupdinfo "$upinfo"
+zsyncmake -u "$appimage" "$appimage"
+
+
+# now dwarfs
+runtime=$(command -v uruntime-appimage-dwarfs-lite-"$ARCH")
 set -- \
 	--force \
 	--set-owner 0 \
@@ -28,7 +42,7 @@ set -- \
 
 
 # high comp and block
-appimage=test-zstd22-S26-$ARCH.AppImage
+appimage=dwfs-zstd22-S26-$ARCH.AppImage
 upinfo="$upinfobase|$appimage.zsync"
 mkdwarfs "$@" -C zstd:level=22 -S26 -B6 --output "$appimage"
 chmod +x "$appimage"
@@ -36,7 +50,7 @@ chmod +x "$appimage"
 zsyncmake -u "$appimage" "$appimage"
 
 # high comp and low block
-appimage=test-zstd22-S20-$ARCH.AppImage
+appimage=dwfs-zstd22-S20-$ARCH.AppImage
 upinfo="$upinfobase|$appimage.zsync"
 mkdwarfs "$@"  -C zstd:level=22 -S20 -B6 --output "$appimage"
 chmod +x "$appimage"
@@ -44,7 +58,7 @@ chmod +x "$appimage"
 zsyncmake -u "$appimage" "$appimage"
 
 # low comp and high block
-appimage=test-zstd10-S26-$ARCH.AppImage
+appimage=dwfs-zstd10-S26-$ARCH.AppImage
 upinfo="$upinfobase|$appimage.zsync"
 mkdwarfs "$@" -C zstd:level=10 -S26 -B6 --output "$appimage"
 chmod +x "$appimage"
@@ -52,7 +66,7 @@ chmod +x "$appimage"
 zsyncmake -u "$appimage" "$appimage"
 
 # low comp and low block
-appimage=test-zstd10-S20-$ARCH.AppImage
+appimage=dwfs-zstd10-S20-$ARCH.AppImage
 upinfo="$upinfobase|$appimage.zsync"
 mkdwarfs "$@" -C zstd:level=10 -S20 -B6 --output "$appimage"
 chmod +x "$appimage"
