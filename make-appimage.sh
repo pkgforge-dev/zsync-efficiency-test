@@ -3,22 +3,28 @@
 set -eu
 
 ARCH=$(uname -m)
-VERSION=$(pacman -Q PACKAGENAME | awk '{print $2; exit}') # example command to get version of application here
+VERSION=$(pacman -Q filelight | awk '{print $2; exit}')
 export ARCH VERSION
 export OUTPATH=./dist
-export ADD_HOOKS="self-updater.hook"
+export ADD_HOOKS="self-updater.bg.hook"
 export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
-export ICON=PATH_OR_URL_TO_ICON
-export DESKTOP=PATH_OR_URL_TO_DESKTOP_ENTRY
+export ICON=/usr/share/icons/hicolor/128x128/apps/filelight.png
+export DESKTOP=/usr/share/applications/org.kde.filelight.desktop
+export ALWAYS_SOFTWARE=1
 
 # Deploy dependencies
-quick-sharun /PATH/TO/BINARY_AND_LIBRARIES_HERE
+quick-sharun /usr/bin/filelight
 
-# Additional changes can be done in between here
+dwarfs \
+	--force \
+	--set-owner 0 \
+	--set-group 0 \
+	--no-history \
+	--no-create-timestamp \
+	--header "$(command -v uruntime-appimage-dwarfs-lite-"$ARCH")" \
+	--input ./AppDir
+	--output ./test.AppImage
 
-# Turn AppDir into AppImage
-quick-sharun --make-appimage
-
-# Test the app for 12 seconds, if the test fails due to the app
-# having issues running in the CI use --simple-test instead
-quick-sharun --test ./dist/*.AppImage
+zsyncmake -u
+mkdir -p ./dist
+mv -v ./*.AppImage* ./dist
