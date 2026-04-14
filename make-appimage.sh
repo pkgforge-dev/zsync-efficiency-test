@@ -6,7 +6,6 @@ ARCH=$(uname -m)
 VERSION=$(pacman -Q filelight | awk '{print $2; exit}')
 export ARCH VERSION
 export OUTPATH=./dist
-export ADD_HOOKS="self-updater.bg.hook"
 export ICON=/usr/share/icons/hicolor/128x128/apps/filelight.png
 export DESKTOP=/usr/share/applications/org.kde.filelight.desktop
 export ALWAYS_SOFTWARE=1
@@ -26,33 +25,34 @@ set -- \
 	--header "$runtime" \
 	--input "$PWD"/AppDir
 
-mkdwarfs "$@" \
-	          -C zstd:level=22 -S26 -B6 \	
-         --output ./test-zstd22-S26.AppImage
-UPINFO="$upinfobase|test-zstd22-S26.AppImage.zsync"
-./test-zstd22-S26.AppImage --appimage-addupdinfo "$UPINFO"
-zsyncmake -u ./test-zstd22-S26.AppImage.zsync ./test-zstd22-S26.AppImage
 
-mkdwarfs "$@" \
-	          -C zstd:level=22 -S20 -B6 \
-	     --output ./test-zstd22-S20.AppImage
-UPINFO="$upinfobase|test-zstd22-S20.AppImage.zsync"
-./test-zstd10-S26.AppImage --appimage-addupdinfo "$UPINFO"
-zsyncmake -u ./test-zstd10-S26.AppImage.zsync ./test-zstd10-S26.AppImage
+# high comp and block
+appimage=test-zstd22-S26.AppImage
+upinfo="$upinfobase|$appimage.zsync"
+mkdwarfs "$@" -C zstd:level=22 -S26 -B6 --output "$appimage"
+./"$appimage" --appimage-addupdinfo "$upinfo"
+zsyncmake -u ./"$appimage".zsync "$appimage"
 
-mkdwarfs "$@" \
-             -C zstd:level=10 -S26 -B6 \
-         --output ./test-zstd10-S26.AppImage
-UPINFO="$upinfobase|test-zstd10-S26.AppImage.zsync"
-./test-zstd10-S26.AppImage --appimage-addupdinfo "$UPINFO"
-zsyncmake -u ./test-zstd10-S26.AppImage.zsync ./test-zstd10-S26.AppImage
+# high comp and low block
+appimage=test-zstd22-S20.AppImage
+upinfo="$upinfobase|$appimage.zsync"
+mkdwarfs "$@"  -C zstd:level=22 -S20 -B6 --output "$appimage"
+./"$appimage" --appimage-addupdinfo "$upinfo"
+zsyncmake -u ./"$appimage".zsync "$appimage"
 
-mkdwarfs "$@" \
-              -C zstd:level=10 -S20 -B6 \
-         --output ./test-zstd10-S20.AppImage
-UPINFO="$upinfobase|test-zstd10-S20.AppImage.zsync"
-./test-zstd10-S20.AppImage --appimage-addupdinfo "$UPINFO"
-zsyncmake -u ./test-zstd10-S20.AppImage.zsync ./test-zstd10-S20.AppImage
+# low comp and high block
+appimage=test-zstd10-S26.AppImage
+upinfo="$upinfobase|$appimage.zsync"
+mkdwarfs "$@" -C zstd:level=10 -S26 -B6 --output "$appimage"
+./"$appimage" --appimage-addupdinfo "$upinfo"
+zsyncmake -u ./"$appimage".zsync "$appimage"
+
+# low comp and low block
+appimage=test-zstd10-S20.AppImage
+upinfo="$upinfobase|$appimage.zsync"
+mkdwarfs "$@" -C zstd:level=10 -S20 -B6 --output "$appimage"
+./"$appimage" --appimage-addupdinfo "$upinfo"
+zsyncmake -u ./"$appimage".zsync "$appimage"
 
 
 mkdir -p ./dist
