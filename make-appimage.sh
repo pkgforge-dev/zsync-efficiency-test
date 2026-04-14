@@ -27,26 +27,36 @@ set -- \
 	--input "$PWD"/AppDir
 
 mkdwarfs "$@" \
-	-C zstd:level=22 -S26 -B6 \	
-	--output "$PWD"/test-zstd22-S26.AppImage
+	          -C zstd:level=22 -S26 -B6 \	
+         --output ./test-zstd22-S26.AppImage
 UPINFO="$upinfobase|test-zstd22-S26.AppImage.zsync"
+./test-zstd22-S26.AppImage --appimage-addupdinfo "$UPINFO"
+zsyncmake -u ./test-zstd22-S26.AppImage.zsync ./test-zstd22-S26.AppImage
 
 mkdwarfs "$@" \
-	-C zstd:level=22 -S20 -B6 \
-	--output "$PWD"/test-zstd22-S20.AppImage
+	          -C zstd:level=22 -S20 -B6 \
+	     --output ./test-zstd22-S20.AppImage
 UPINFO="$upinfobase|test-zstd22-S20.AppImage.zsync"
+./test-zstd10-S26.AppImage --appimage-addupdinfo "$UPINFO"
+zsyncmake -u ./test-zstd10-S26.AppImage.zsync ./test-zstd10-S26.AppImage
 
 mkdwarfs "$@" \
-	-C zstd:level=10 -S26 -B6 \
-	--output "$PWD"/test-zstd10-S26.AppImage
+             -C zstd:level=10 -S26 -B6 \
+         --output ./test-zstd10-S26.AppImage
 UPINFO="$upinfobase|test-zstd10-S26.AppImage.zsync"
+./test-zstd10-S26.AppImage --appimage-addupdinfo "$UPINFO"
+zsyncmake -u ./test-zstd10-S26.AppImage.zsync ./test-zstd10-S26.AppImage
 
 mkdwarfs "$@" \
-	-C zstd:level=10 -S20 -B6 \
-	--output "$PWD"/test-zstd10-S20.AppImage
+              -C zstd:level=10 -S20 -B6 \
+         --output ./test-zstd10-S20.AppImage
 UPINFO="$upinfobase|test-zstd10-S20.AppImage.zsync"
+./test-zstd10-S20.AppImage --appimage-addupdinfo "$UPINFO"
+zsyncmake -u ./test-zstd10-S20.AppImage.zsync ./test-zstd10-S20.AppImage
 
 
-zsyncmake -u
 mkdir -p ./dist
+echo "X-AppImage-Name=TEST"    >  ./dist/appinfo
+echo "X-AppImage-Version=TEST" >> ./dist/appinfo
+echo "X-AppImage-Arch=$ARCH"   >> ./dist/appinfo
 mv -v ./*.AppImage* ./dist
