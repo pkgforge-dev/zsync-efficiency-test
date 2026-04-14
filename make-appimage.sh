@@ -13,6 +13,7 @@ export ALWAYS_SOFTWARE=1
 # Deploy dependencies
 quick-sharun /usr/bin/filelight
 
+cp -v /usr/lib/libgtk-3.so* ./AppDir/shared/lib
 
 runtime=$(command -v uruntime-appimage-dwarfs-lite-"$ARCH")
 upinfobase="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest"
