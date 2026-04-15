@@ -13,7 +13,7 @@ export ALWAYS_SOFTWARE=1
 # Deploy dependencies
 quick-sharun /usr/bin/filelight
 
-cp -v /usr/lib/libgtk-3.so* ./AppDir/shared/lib
+#cp -v /usr/lib/libgtk-3.so* ./AppDir/shared/lib
 
 upinfobase="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest"
 
@@ -38,31 +38,15 @@ set -- \
 	--set-owner 0 \
 	--set-group 0 \
 	--no-history \
+	--no-section-index \
 	--no-create-timestamp \
 	--header "$runtime" \
 	--input "$PWD"/AppDir
 
-
-# high comp and block
+# high comp and high block
 appimage=dwfs-zstd22-S26-$ARCH.AppImage
 upinfo="$upinfobase|$appimage.zsync"
 mkdwarfs "$@" -C zstd:level=22 -S26 -B6 --output "$appimage"
-chmod +x "$appimage"
-./"$appimage" --appimage-addupdinfo "$upinfo"
-zsyncmake -u "$appimage" "$appimage"
-
-# high comp and low block
-appimage=dwfs-zstd22-S20-$ARCH.AppImage
-upinfo="$upinfobase|$appimage.zsync"
-mkdwarfs "$@"  -C zstd:level=22 -S20 -B6 --output "$appimage"
-chmod +x "$appimage"
-./"$appimage" --appimage-addupdinfo "$upinfo"
-zsyncmake -u "$appimage" "$appimage"
-
-# low comp and high block
-appimage=dwfs-zstd10-S26-$ARCH.AppImage
-upinfo="$upinfobase|$appimage.zsync"
-mkdwarfs "$@" -C zstd:level=10 -S26 -B6 --output "$appimage"
 chmod +x "$appimage"
 ./"$appimage" --appimage-addupdinfo "$upinfo"
 zsyncmake -u "$appimage" "$appimage"
