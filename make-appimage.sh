@@ -34,7 +34,7 @@ runtime=$(command -v uruntime-appimage-dwarfs-lite-"$ARCH")
 set -- \
 	--force \
 	--order=path \
-	--compression=none \
+	--compression=null \
 	--set-owner 0 \
 	--set-group 0 \
 	--no-history \
