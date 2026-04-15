@@ -22,3 +22,8 @@ Findings:
 * Bonus: `zstd10` with `-S20` (1MIB blocks) doesn't really increase the launch speed. You are better off always using `zstd22` and `-S26` (64 MIB blocks).
 
 <img width="556" height="219" alt="image" src="https://github.com/user-attachments/assets/c7abe7f1-d970-4752-9daf-6ae7b7ebfe28" />
+
+* Bonus2: `--order=path` improves the launch speed very slightly: 
+
+<img width="635" height="198" alt="image" src="https://github.com/user-attachments/assets/978e2687-9cb7-4039-8b4f-4bce262c0b43" />
+
