@@ -33,7 +33,7 @@ zsyncmake -u "$appimage" "$appimage"
 runtime=$(command -v uruntime-appimage-dwarfs-lite-"$ARCH")
 set -- \
 	--force \
-	--order=none \
+	--order=path \
 	--compression=none \
 	--set-owner 0 \
 	--set-group 0 \
