@@ -34,7 +34,6 @@ runtime=$(command -v uruntime-appimage-dwarfs-lite-"$ARCH")
 set -- \
 	--force \
 	--order=path \
-	--compression=null \
 	--set-owner 0 \
 	--set-group 0 \
 	--no-history \
@@ -42,12 +41,22 @@ set -- \
 	--header "$runtime" \
 	--input "$PWD"/AppDir
 
-appimage=dwfs-nocomp-$ARCH.AppImage
+# high comp and high block
+appimage=dwfs-zstd22-S26-$ARCH.AppImage
 upinfo="$upinfobase|$appimage.zsync"
-mkdwarfs "$@" --output "$appimage"
+mkdwarfs "$@" -C zstd:level=22 -S26 -B6 --output "$appimage"
 chmod +x "$appimage"
 ./"$appimage" --appimage-addupdinfo "$upinfo"
 zsyncmake -u "$appimage" "$appimage"
+
+# low comp and low block
+appimage=dwfs-zstd10-S20-$ARCH.AppImage
+upinfo="$upinfobase|$appimage.zsync"
+mkdwarfs "$@" -C zstd:level=10 -S20 -B6 --output "$appimage"
+chmod +x "$appimage"
+./"$appimage" --appimage-addupdinfo "$upinfo"
+zsyncmake -u "$appimage" "$appimage"
+
 
 mkdir -p ./dist
 echo "X-AppImage-Name=TEST"    >  ./dist/appinfo
